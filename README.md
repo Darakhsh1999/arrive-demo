@@ -105,3 +105,10 @@ In your solution, we expect to see:
 Filter 2 dataframes, one for private users and one for corporate users. See if some individauls are closer to business users, if so, what are the features that make them closer to business users?
 
 Check that the currently used for the transaction matches with the currency of the geolocation. perhaps a global business pays in another currency? Rare scenario but it should definately be indicative of business use case since no individual would use another currency for parking.
+
+
+## TODO
+
+- [ ] tsne analysis of data w.r.t account type
+- [ ] Simple detection functions
+- [ ] Implement a supervised learning model and check logits on private users and separate lower confidence users
