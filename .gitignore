@@ -1,2 +1,5 @@
 .env
+.vscode
 __pycache__
+src/assignment-sample-data.csv
+2025-assignment-instruction.pdf
