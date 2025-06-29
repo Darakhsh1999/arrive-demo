@@ -109,6 +109,7 @@ Check that the currently used for the transaction matches with the currency of t
 
 ## TODO
 
-- [ ] tsne analysis of data w.r.t account type
+- [ ] Final data cleaning and user aggregation
 - [ ] Simple detection functions
-- [ ] Implement a supervised learning model and check logits on private users and separate lower confidence users
+- [ ] Implement a supervised learning model (KNN and Random Forest) perform prediction CV
+- [ ] Train a model on both data. Check logits on users labeled as  private users and separate lower confidence users, these should indicate business use case since model's prediction is not aligned with the true label
