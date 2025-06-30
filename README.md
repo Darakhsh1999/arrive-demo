@@ -86,12 +86,9 @@ In your solution, we expect to see:
 
 ## Solution plan
 
-- Unsupervised learning since we do not have a target variable but try to detect if individual account are clustered closer to business users
-- Use clustering algorithm to group users based on their parking behavior.
-- Create a vector database could be used to store the embeddings of the users and their parking behavior.
 - Feature engineer the parking behavior of the users.
     * parking duration ~8 hours is indicator of business use case
-    * parking near residential area is NOT an indicator of business use case
+    * parking near residential area is an indicator of private use case
     * parking frequency, many parking transactions per day is indicator of business use case (frequency distribution w.r.t class)
     * higher parking frequency during weekdays is indicator of business use case
     * car model, some car models are more likely to be used for business purposes (compact car, SUV) while other are more likely to be used for private purposes (sports car, luxury car)
