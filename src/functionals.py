@@ -1,6 +1,6 @@
+import pandas as pd
 
-
-def corporate_car(df):
+def corporate_car(df: pd.DataFrame) -> pd.DataFrame:
     """
     Identifies private accounts that have used cars registered to corporate accounts.
     
@@ -24,7 +24,7 @@ def corporate_car(df):
     return violations[['parking_id', 'parkinguser_id', 'car_id', 'account_type']]
 
 
-def shared_car(df):
+def shared_car(df: pd.DataFrame) -> pd.DataFrame:
     """
     Identifies cars that are used by multiple different accounts.
     
@@ -56,18 +56,3 @@ def shared_car(df):
     shared_cars = shared_cars.sort_values('user_count', ascending=False)
     
     return shared_cars
-
-
-def parking_frequency(df):
-    """
-    Counts the number of parking transactions per user.
-    
-    Args:
-        df (pandas.DataFrame): DataFrame containing parking transaction data
-        
-    Returns:
-        dict: A dictionary mapping user_id to their number of parking transactions
-              Example: {'user1': 5, 'user2': 3, ...}
-    """
-    # Count occurrences of each parkinguser_id and convert to dictionary
-    return df['parkinguser_id'].value_counts().to_dict()

@@ -91,11 +91,10 @@ In your solution, we expect to see:
     * parking near residential area is an indicator of private use case
     * parking frequency, many parking transactions per day is indicator of business use case (frequency distribution w.r.t class)
     * higher parking frequency during weekdays is indicator of business use case
-    * car model, some car models are more likely to be used for business purposes (compact car, SUV) while other are more likely to be used for private purposes (sports car, luxury car)
+    * car model, some car models are more likely to be used for business purposes (compact car, SUV) while other are more likely to be used for private purposes (sports car, luxury car), unfortunately this information is not available in the data since we cant relate car_id to model
     
 
 - Stuff that can throw off the model
-    * people use the app for both private and business purposes on the same account
     * people use their company car on weekends
     
 
@@ -106,7 +105,6 @@ Check that the currently used for the transaction matches with the currency of t
 
 ## TODO
 
-- [ ] Final data cleaning and user aggregation
-- [ ] Simple detection functions
+- [ ] User aggregation
 - [ ] Implement a supervised learning model (KNN and Random Forest) perform prediction CV
 - [ ] Train a model on both data. Check logits on users labeled as  private users and separate lower confidence users, these should indicate business use case since model's prediction is not aligned with the true label
