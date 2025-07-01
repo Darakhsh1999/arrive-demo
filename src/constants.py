@@ -10,3 +10,20 @@ CURRENCY_TO_SEK = {
     'EUR': EUR_TO_SEK,
     'NOK': NOK_TO_SEK
 }
+
+AREA_TYPE_MAPPING = {
+    'AboveGroundGarage': 0,
+    'SurfaceLot': 1,
+    'Administrative': 2,
+    'OnStreet': 3,
+    'UndergroundGarage': 4,
+    'EVC': 5,
+    'CameraParkArea': 6
+}
+
+
+ACCOUNT_TYPE_MAPPING = {
+    'private': 0,
+    'corporate': 1
+}
+    

@@ -98,7 +98,10 @@ Filter 2 dataframes, one for private users and one for corporate users. See if s
 
 ## TODO
 
-- [ ] change weekday from 0-6 to 0 or 1 where 0 is weekday and 1 is weekend
 - [ ] User aggregation
 - [ ] Implement a supervised learning model (KNN and Random Forest) perform prediction CV
 - [ ] Train a model on both data. Check logits on users labeled as  private users and separate lower confidence users, these should indicate business use case since model's prediction is not aligned with the true label
+- [ ] 
+- [ ] 
+- [ ] 
+- [ ] 
