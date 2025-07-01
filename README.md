@@ -98,9 +98,10 @@ Filter 2 dataframes, one for private users and one for corporate users. See if s
 
 ## TODO
 
-- [ ] Implement a supervised learning model (KNN and Random Forest) perform prediction CV
-- [ ] Train a model on both data. Check logits on users labeled as  private users and separate lower confidence users, these should indicate business use case since model's prediction is not aligned with the true label
+- [ ] Implement a supervised learning model (KNN or Random Forest) perform prediction CV
 - [ ] 
 - [ ] 
-- [ ] 
-- [ ] 
+
+
+## Notes
+Training a model that outputs class logits can be a viable approach. This essentially builds on the assumption that the mislabeled data (private users that are parking for business purposes) will have lower confidence logits than the correctly labeled data (corporate users that are parking for business purposes). Using some kind of tuned threshold, we can separate the mislabeled data and further analyze it. Since we do not have a ground truth, that apriori categorizes users correctly, we cannot really get correct accuracy feedback. The feedback would be retrieved from the sales team whether the private account actually was used in business purposes.
