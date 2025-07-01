@@ -98,10 +98,10 @@ Filter 2 dataframes, one for private users and one for corporate users. See if s
 
 ## TODO
 
-- [ ] Implement a supervised learning model (KNN or Random Forest) perform prediction CV
-- [ ] 
-- [ ] 
-
+- [ ] detect mislabeled data = users that model predicts as corporate but are labeled as private
+- [ ] Make excalidraw presentation
+- [ ] create visualizations of some of the data metrics w.r.t to account_type
+- [ ] Discuss topic sections mentioned in PDf
 
 ## Notes
 Training a model that outputs class logits can be a viable approach. This essentially builds on the assumption that the mislabeled data (private users that are parking for business purposes) will have lower confidence logits than the correctly labeled data (corporate users that are parking for business purposes). Using some kind of tuned threshold, we can separate the mislabeled data and further analyze it. Since we do not have a ground truth, that apriori categorizes users correctly, we cannot really get correct accuracy feedback. The feedback would be retrieved from the sales team whether the private account actually was used in business purposes.
