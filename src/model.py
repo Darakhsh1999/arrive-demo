@@ -1,82 +1,89 @@
+import re
+import os
 import pandas as pd
 import numpy as np
 from sklearn.model_selection import LeaveOneOut, cross_val_score
 from sklearn.preprocessing import StandardScaler
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.pipeline import Pipeline
-import re
-import os
+
+
+def parse_array_from_string(s):
+    numbers = re.findall(r'-?[-+]?\d*\.?\d+', str(s))
+    return [float(n) for n in numbers]
 
 def run_knn_classifier():
     """
     Implements and evaluates a KNN classifier on the aggregated user data.
     """
-    # --- 1. Load Data ---
-    # Construct the path to the CSV file relative to the script's location
-    script_dir = os.path.dirname(__file__)
-    file_path = os.path.join(script_dir, 'aggregated-user-data.csv')
-    
+
+    ### Load Data ###
     try:
-        data = pd.read_csv(file_path)
-    except FileNotFoundError:
-        print(f"Error: The file '{file_path}' was not found.")
-        # As a fallback, try to load from the current working directory
-        try:
-            data = pd.read_csv('aggregated-user-data.csv')
-        except FileNotFoundError:
-            print("Error: Could not find 'aggregated-user-data.csv' in src/ or current directory.")
-            return
+        data_path = 'aggregated-user-data.csv'
+        data = pd.read_csv(data_path) # (300, 9)
+    except Exception as e:
+        print(f"Error: The file '{data_path}' was not found.")
+        raise e
+    
+    
+    ### Preprocessing ###
 
-    # --- 2. Preprocessing ---
     # Drop the user ID as it's not a feature
-    if 'parkinguser_id' in data.columns:
-        data = data.drop('parkinguser_id', axis=1)
+    data = data.drop('parkinguser_id', axis=1) # (300, 8)
 
-    # Convert target variable 'account_type' to integer
-    if 'account_type' in data.columns:
-        data['account_type'] = data['account_type'].astype(int)
-        y = data['account_type']
-        X = data.drop('account_type', axis=1)
-    else:
-        print("Error: 'account_type' column not found.")
-        return
+    # Convert target variable 'account_type' to integer and separate features and target (X,y)
+    data['account_type'] = data['account_type'].astype(int)
+    y = data['account_type'] # (300,)
+    X = data.drop('account_type', axis=1) # (300, 7)
 
-    # --- 3. Feature Engineering for 'area_type' ---
-    if 'area_type' in X.columns:
-        # This function parses the string to a list of floats.
-        def parse_array_from_string(s):
-            numbers = re.findall(r'-?[-+]?\d*\.?\d+', str(s))
-            return [float(n) for n in numbers]
+    ### Feature Engineering for area_type ###
 
-        try:
-            TARGET_DIM = 7
-            area_type_features = X['area_type'].apply(parse_array_from_string)
+    try:
+        # Parse the string representation of lists into actual lists of floats
+        area_type_features = X['area_type'].apply(parse_array_from_string).tolist()
 
-            # Pad or truncate each list to the target dimension
-            processed_features = []
-            for lst in area_type_features:
-                if len(lst) > TARGET_DIM:
-                    processed_features.append(lst[:TARGET_DIM])  # Truncate
-                else:
-                    # Pad with zeros if shorter
-                    processed_features.append(lst + [0] * (TARGET_DIM - len(lst)))
+        # --- Diagnostic Check ---
+        # Find and print vectors with lengths other than 7 to investigate
+        print("\n--- Checking Embedding Dimensions ---")
+        found_mismatch = False
+        for i, lst in enumerate(area_type_features):
+            if len(lst) != 7:
+                print(f"Row index {X.index[i]}: Found vector of length {len(lst)}.")
+                found_mismatch = True
+        
+        if not found_mismatch:
+            print("All embedding vectors have a length of 7.")
+        print("-------------------------------------\n")
+        # --- End Diagnostic Check ---
+
+        # Determine the dimension from the longest vector to avoid data loss
+        if any(area_type_features):
+            max_dim = max(len(lst) for lst in area_type_features if lst)
+
+            # Pad each list to the max dimension to ensure all vectors are of equal length
+            processed_features = [lst + [0] * (max_dim - len(lst)) for lst in area_type_features]
 
             # Create a DataFrame from the processed features
             area_type_df = pd.DataFrame(
-                processed_features, 
-                index=X.index, 
-                columns=[f'area_type_{i}' for i in range(TARGET_DIM)]
+                processed_features,
+                index=X.index,
+                columns=[f'area_type_{i}' for i in range(max_dim)]
             )
-            
-            # Drop the original 'area_type' column and concatenate the new features
+
+            # Drop the original 'area_type' column and concatenate the new feature columns
             X = X.drop('area_type', axis=1)
             X = pd.concat([X, area_type_df], axis=1)
+        else:
+            # If the column is empty or contains no valid vectors, just drop it
+            X = X.drop('area_type', axis=1)
 
-        except Exception as e:
-            print(f"Error processing 'area_type' column: {e}")
-            return
+    except Exception as e:
+        print(f"Error processing 'area_type' column: {e}")
+        return
     
-    # --- 4. Model Pipeline ---
+
+    ### Model Pipeline ###
+
     # Create a pipeline that standardizes the features and then applies the KNN classifier.
     # StandardScaler standardizes features by removing the mean and scaling to unit variance.
     pipeline = Pipeline([
@@ -84,7 +91,8 @@ def run_knn_classifier():
         ('knn', KNeighborsClassifier(n_neighbors=5))
     ])
 
-    # --- 5. Evaluation ---
+    ### Evaluation ###
+
     # Leave-One-Out Cross-Validation (LOOCV)
     # In LOOCV, each sample is used once as a test set while the remaining samples form the training set.
     # This is repeated for each sample in the dataset.
