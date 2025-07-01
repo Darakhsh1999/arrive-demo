@@ -11,6 +11,7 @@ Create a presentation for 2 groups of people
 
 - Heterogeneous data
     * parking behaviour
+    * different data types
     * finance data
 
 - Various data sources need to be integrated
@@ -87,24 +88,17 @@ In your solution, we expect to see:
 ## Solution plan
 
 - Feature engineer the parking behavior of the users.
-    * parking duration ~8 hours is indicator of business use case
-    * parking near residential area is an indicator of private use case
-    * parking frequency, many parking transactions per day is indicator of business use case (frequency distribution w.r.t class)
-    * higher parking frequency during weekdays is indicator of business use case
+    * parking near residential area is an indicator of private use case.
+    * parking frequency, many parking transactions per day is indicator of business use case (frequency distribution w.r.t account type)
+    * higher parking frequency during weekdays is indicator of business use case while parking during weekends is indicator of private use case
     * car model, some car models are more likely to be used for business purposes (compact car, SUV) while other are more likely to be used for private purposes (sports car, luxury car), unfortunately this information is not available in the data since we cant relate car_id to model
-    
-
-- Stuff that can throw off the model
-    * people use their company car on weekends
     
 
 Filter 2 dataframes, one for private users and one for corporate users. See if some individauls are closer to business users, if so, what are the features that make them closer to business users?
 
-Check that the currently used for the transaction matches with the currency of the geolocation. perhaps a global business pays in another currency? Rare scenario but it should definately be indicative of business use case since no individual would use another currency for parking.
-
-
 ## TODO
 
+- [ ] change weekday from 0-6 to 0 or 1 where 0 is weekday and 1 is weekend
 - [ ] User aggregation
 - [ ] Implement a supervised learning model (KNN and Random Forest) perform prediction CV
 - [ ] Train a model on both data. Check logits on users labeled as  private users and separate lower confidence users, these should indicate business use case since model's prediction is not aligned with the true label
