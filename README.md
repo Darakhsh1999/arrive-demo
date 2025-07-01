@@ -98,7 +98,6 @@ Filter 2 dataframes, one for private users and one for corporate users. See if s
 
 ## TODO
 
-- [ ] User aggregation
 - [ ] Implement a supervised learning model (KNN and Random Forest) perform prediction CV
 - [ ] Train a model on both data. Check logits on users labeled as  private users and separate lower confidence users, these should indicate business use case since model's prediction is not aligned with the true label
 - [ ] 
