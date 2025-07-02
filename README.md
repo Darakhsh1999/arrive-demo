@@ -98,6 +98,8 @@ Filter 2 dataframes, one for private users and one for corporate users. See if s
 
 ## TODO
 
+
+- [ ] fix the area_type feature engineering bug
 - [ ] detect mislabeled data = users that model predicts as corporate but are labeled as private
 - [ ] Make excalidraw presentation
 - [ ] create visualizations of some of the data metrics w.r.t to account_type
